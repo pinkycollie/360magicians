@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>360 Magicians - Agent Development Kit</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 360 Magicians Agent Development Kit</h1>
+            <p class="subtitle">Agnostic Framework for AI Agents, Operators & Bots</p>
+        </header>
+
+        <nav class="main-nav">
+            <button class="nav-btn active" data-section="dashboard">Dashboard</button>
+            <button class="nav-btn" data-section="agents">Agents</button>
+            <button class="nav-btn" data-section="orchestration">Orchestration</button>
+            <button class="nav-btn" data-section="models">LLM Models</button>
+            <button class="nav-btn" data-section="deployment">Deployment</button>
+            <button class="nav-btn" data-section="monitoring">Monitoring</button>
+        </nav>
+
+        <main id="content-area">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <h2>System Dashboard</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Active Agents</h3>
+                        <p class="stat-number" id="active-agents-count">0</p>
+                        <p class="stat-label">Currently Running</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Task Queue</h3>
+                        <p class="stat-number" id="task-queue-count">0</p>
+                        <p class="stat-label">Pending Tasks</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Success Rate</h3>
+                        <p class="stat-number" id="success-rate">98.5%</p>
+                        <p class="stat-label">Last 24 Hours</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>API Calls</h3>
+                        <p class="stat-number" id="api-calls">0</p>
+                        <p class="stat-label">Today</p>
+                    </div>
+                </div>
+
+                <div class="section-grid">
+                    <div class="info-panel">
+                        <h3>Quick Start</h3>
+                        <ol>
+                            <li>Configure your LLM providers in the <strong>Models</strong> section</li>
+                            <li>Create or enable agents in the <strong>Agents</strong> section</li>
+                            <li>Set up workflows in <strong>Orchestration</strong></li>
+                            <li>Deploy your agents using <strong>Deployment</strong></li>
+                            <li>Monitor performance in <strong>Monitoring</strong></li>
+                        </ol>
+                    </div>
+                    <div class="info-panel">
+                        <h3>System Status</h3>
+                        <div class="status-list">
+                            <div class="status-item">
+                                <span class="status-dot status-ok"></span>
+                                <span>Message Bus: Connected</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="status-dot status-ok"></span>
+                                <span>Task Queue: Operational</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="status-dot status-ok"></span>
+                                <span>Database: Connected</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="status-dot status-warning"></span>
+                                <span>Vector Store: Not Configured</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Agents Section -->
+            <section id="agents" class="content-section">
+                <h2>Agent Management</h2>
+                <div class="section-header">
+                    <button class="btn btn-primary" onclick="showAgentForm()">+ Create New Agent</button>
+                    <input type="text" id="agent-search" placeholder="Search agents..." class="search-input">
+                </div>
+
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="internal">Internal Agents</button>
+                    <button class="tab-btn" data-tab="external">External Agents</button>
+                    <button class="tab-btn" data-tab="operators">Specialized Operators</button>
+                </div>
+
+                <div id="internal" class="tab-content active">
+                    <div class="agents-grid" id="internal-agents-grid">
+                        <!-- Agents will be dynamically loaded here -->
+                    </div>
+                </div>
+
+                <div id="external" class="tab-content">
+                    <div class="agents-grid" id="external-agents-grid">
+                        <!-- External agents will be dynamically loaded here -->
+                    </div>
+                </div>
+
+                <div id="operators" class="tab-content">
+                    <div class="agents-grid" id="operators-grid">
+                        <!-- Operators will be dynamically loaded here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Orchestration Section -->
+            <section id="orchestration" class="content-section">
+                <h2>Workflow Orchestration</h2>
+                <div class="section-header">
+                    <button class="btn btn-primary" onclick="createWorkflow()">+ New Workflow</button>
+                </div>
+
+                <div class="workflow-builder">
+                    <div class="workflow-sidebar">
+                        <h3>Available Agents</h3>
+                        <div id="draggable-agents" class="draggable-list">
+                            <!-- Will be populated from agent registry -->
+                        </div>
+                    </div>
+                    <div class="workflow-canvas">
+                        <h3>Workflow Canvas</h3>
+                        <p class="placeholder-text">Drag agents here to build your workflow</p>
+                        <div id="workflow-area" class="canvas-area">
+                            <!-- Workflow nodes will be added here -->
+                        </div>
+                    </div>
+                    <div class="workflow-properties">
+                        <h3>Properties</h3>
+                        <div id="node-properties">
+                            <p class="placeholder-text">Select a node to edit properties</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="workflow-controls">
+                    <button class="btn" onclick="saveWorkflow()">Save Workflow</button>
+                    <button class="btn" onclick="validateWorkflow()">Validate</button>
+                    <button class="btn btn-primary" onclick="deployWorkflow()">Deploy</button>
+                </div>
+            </section>
+
+            <!-- Models Section -->
+            <section id="models" class="content-section">
+                <h2>LLM Model Configuration</h2>
+                <div class="section-header">
+                    <button class="btn btn-primary" onclick="addModelProvider()">+ Add Provider</button>
+                </div>
+
+                <div class="models-grid">
+                    <div class="model-provider-card">
+                        <h3>OpenAI</h3>
+                        <div class="form-group">
+                            <label>API Key</label>
+                            <input type="password" id="openai-key" placeholder="sk-..." class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label>Models</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" value="gpt-4o"> GPT-4o</label>
+                                <label><input type="checkbox" value="gpt-4-turbo"> GPT-4 Turbo</label>
+                                <label><input type="checkbox" value="gpt-3.5-turbo"> GPT-3.5 Turbo</label>
+                            </div>
+                        </div>
+                        <button class="btn btn-small" onclick="testConnection('openai')">Test Connection</button>
+                    </div>
+
+                    <div class="model-provider-card">
+                        <h3>Anthropic</h3>
+                        <div class="form-group">
+                            <label>API Key</label>
+                            <input type="password" id="anthropic-key" placeholder="sk-ant-..." class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label>Models</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" value="claude-sonnet-4"> Claude Sonnet 4</label>
+                                <label><input type="checkbox" value="claude-opus-4"> Claude Opus 4</label>
+                            </div>
+                        </div>
+                        <button class="btn btn-small" onclick="testConnection('anthropic')">Test Connection</button>
+                    </div>
+
+                    <div class="model-provider-card">
+                        <h3>Local (Ollama)</h3>
+                        <div class="form-group">
+                            <label>Endpoint</label>
+                            <input type="text" id="ollama-endpoint" value="http://localhost:11434" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label>Models</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" value="llama3"> Llama 3</label>
+                                <label><input type="checkbox" value="mistral"> Mistral</label>
+                                <label><input type="checkbox" value="codellama"> CodeLlama</label>
+                            </div>
+                        </div>
+                        <button class="btn btn-small" onclick="testConnection('ollama')">Test Connection</button>
+                    </div>
+
+                    <div class="model-provider-card">
+                        <h3>Google</h3>
+                        <div class="form-group">
+                            <label>API Key</label>
+                            <input type="password" id="google-key" placeholder="API Key..." class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label>Models</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" value="gemini-pro"> Gemini Pro</label>
+                                <label><input type="checkbox" value="gemini-ultra"> Gemini Ultra</label>
+                            </div>
+                        </div>
+                        <button class="btn btn-small" onclick="testConnection('google')">Test Connection</button>
+                    </div>
+                </div>
+
+                <div class="model-router-config">
+                    <h3>Model Router Configuration</h3>
+                    <div class="form-group">
+                        <label>Routing Strategy</label>
+                        <select class="form-input" id="routing-strategy">
+                            <option value="cost">Cost Optimization</option>
+                            <option value="latency">Latency Optimization</option>
+                            <option value="quality">Quality Optimization</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Fallback Chain</label>
+                        <textarea class="form-input" rows="3" placeholder="primary_model, backup_model, local_model"></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Deployment Section -->
+            <section id="deployment" class="content-section">
+                <h2>Deployment Configuration</h2>
+                
+                <div class="deployment-options">
+                    <div class="deployment-card">
+                        <h3>🐳 Docker Compose</h3>
+                        <p>Deploy agents using Docker Compose for local/development environments</p>
+                        <div class="form-group">
+                            <label>Docker Compose File</label>
+                            <textarea id="docker-compose-config" class="form-input code-input" rows="15">version: '3.8'
+
+services:
+  agent-orchestrator:
+    image: 360magicians/orchestrator:latest
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=postgresql://postgres:5432/agents
+    ports:
+      - "8000:8000"
+  
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+  
+  postgres:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=agents
+      - POSTGRES_PASSWORD=changeme
+    ports:
+      - "5432:5432"</textarea>
+                        </div>
+                        <button class="btn btn-primary" onclick="generateDockerCompose()">Generate Config</button>
+                        <button class="btn" onclick="downloadConfig('docker-compose')">Download</button>
+                    </div>
+
+                    <div class="deployment-card">
+                        <h3>☸️ Kubernetes</h3>
+                        <p>Deploy agents on Kubernetes for production environments</p>
+                        <div class="form-group">
+                            <label>Kubernetes Manifest</label>
+                            <textarea id="k8s-config" class="form-input code-input" rows="15">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agent-orchestrator
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: agent-orchestrator
+  template:
+    metadata:
+      labels:
+        app: agent-orchestrator
+    spec:
+      containers:
+      - name: orchestrator
+        image: 360magicians/orchestrator:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: REDIS_URL
+          value: "redis://redis-service:6379"</textarea>
+                        </div>
+                        <button class="btn btn-primary" onclick="generateK8sConfig()">Generate Config</button>
+                        <button class="btn" onclick="downloadConfig('k8s')">Download</button>
+                    </div>
+                </div>
+
+                <div class="deployment-settings">
+                    <h3>Environment Configuration</h3>
+                    <div class="form-group">
+                        <label>Environment Variables</label>
+                        <textarea id="env-vars" class="form-input code-input" rows="10" placeholder="OPENAI_API_KEY=sk-...
+ANTHROPIC_API_KEY=sk-ant-...
+DATABASE_URL=postgresql://...
+REDIS_URL=redis://..."></textarea>
+                    </div>
+                    <button class="btn" onclick="saveEnvConfig()">Save Configuration</button>
+                    <button class="btn" onclick="downloadConfig('env')">Download .env</button>
+                </div>
+            </section>
+
+            <!-- Monitoring Section -->
+            <section id="monitoring" class="content-section">
+                <h2>Monitoring & Analytics</h2>
+                
+                <div class="monitoring-grid">
+                    <div class="monitor-card">
+                        <h3>Agent Performance</h3>
+                        <div class="chart-placeholder">
+                            <canvas id="performance-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="monitor-card">
+                        <h3>Request Volume</h3>
+                        <div class="chart-placeholder">
+                            <canvas id="volume-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="logs-section">
+                    <h3>Recent Logs</h3>
+                    <div class="log-controls">
+                        <select class="form-input" id="log-level">
+                            <option value="all">All Levels</option>
+                            <option value="error">Error</option>
+                            <option value="warn">Warning</option>
+                            <option value="info">Info</option>
+                            <option value="debug">Debug</option>
+                        </select>
+                        <button class="btn btn-small" onclick="refreshLogs()">Refresh</button>
+                        <button class="btn btn-small" onclick="clearLogs()">Clear</button>
+                    </div>
+                    <div id="log-output" class="log-output">
+                        <div class="log-entry log-info">[2024-12-14 04:34:10] INFO: System initialized</div>
+                        <div class="log-entry log-info">[2024-12-14 04:34:11] INFO: Agent registry loaded</div>
+                        <div class="log-entry log-success">[2024-12-14 04:34:12] SUCCESS: All services operational</div>
+                    </div>
+                </div>
+
+                <div class="alerts-section">
+                    <h3>Active Alerts</h3>
+                    <div id="alerts-list" class="alerts-list">
+                        <p class="placeholder-text">No active alerts</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Modal for Agent Creation/Editing -->
+        <div id="agent-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeAgentForm()">&times;</span>
+                <h2>Create/Edit Agent</h2>
+                <form id="agent-form">
+                    <div class="form-group">
+                        <label>Agent Name</label>
+                        <input type="text" id="agent-name" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Agent Type</label>
+                        <select id="agent-type" class="form-input" required>
+                            <option value="internal">Internal</option>
+                            <option value="external">External</option>
+                            <option value="operator">Specialized Operator</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="agent-description" class="form-input" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Capabilities (comma-separated)</label>
+                        <input type="text" id="agent-capabilities" class="form-input" placeholder="data_validation, transformation">
+                    </div>
+                    <div class="form-group">
+                        <label>Model Provider</label>
+                        <select id="agent-model" class="form-input">
+                            <option value="openai">OpenAI</option>
+                            <option value="anthropic">Anthropic</option>
+                            <option value="ollama">Ollama (Local)</option>
+                            <option value="google">Google</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Concurrency</label>
+                        <input type="number" id="agent-concurrency" class="form-input" value="10">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Save Agent</button>
+                        <button type="button" class="btn" onclick="closeAgentForm()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
