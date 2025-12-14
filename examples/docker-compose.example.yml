@@ -1,0 +1,176 @@
+version: '3.8'
+
+services:
+  # Agent Orchestrator
+  orchestrator:
+    image: 360magicians/orchestrator:latest
+    container_name: agent-orchestrator
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/agents
+      - REDIS_URL=redis://redis:6379
+      - RABBITMQ_URL=amqp://rabbitmq:5672
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - LOG_LEVEL=INFO
+    depends_on:
+      - postgres
+      - redis
+      - rabbitmq
+    networks:
+      - agent-network
+
+  # Data Processing Agent
+  data-processor:
+    image: 360magicians/data-processor:latest
+    container_name: data-processor-agent
+    restart: unless-stopped
+    environment:
+      - AGENT_ID=data_processor_001
+      - MODEL=gpt-4o
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ORCHESTRATOR_URL=http://orchestrator:8000
+    depends_on:
+      - orchestrator
+    networks:
+      - agent-network
+
+  # Content Generation Agent
+  content-generator:
+    image: 360magicians/content-generator:latest
+    container_name: content-gen-agent
+    restart: unless-stopped
+    environment:
+      - AGENT_ID=content_gen_001
+      - MODEL=claude-sonnet-4
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - ORCHESTRATOR_URL=http://orchestrator:8000
+    depends_on:
+      - orchestrator
+    networks:
+      - agent-network
+
+  # Conversational AI Bot
+  chatbot:
+    image: 360magicians/chatbot:latest
+    container_name: chatbot-agent
+    restart: unless-stopped
+    ports:
+      - "8001:8000"
+    environment:
+      - AGENT_ID=chatbot_001
+      - MODEL=gpt-4o
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ORCHESTRATOR_URL=http://orchestrator:8000
+    depends_on:
+      - orchestrator
+    networks:
+      - agent-network
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: agent-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=agents
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - agent-network
+
+  # Redis Cache & Queue
+  redis:
+    image: redis:7-alpine
+    container_name: agent-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+    networks:
+      - agent-network
+
+  # RabbitMQ Message Bus
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: agent-rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=password
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - agent-network
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: agent-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - orchestrator
+    networks:
+      - agent-network
+
+  # Prometheus Monitoring
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: agent-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    networks:
+      - agent-network
+
+  # Grafana Dashboard
+  grafana:
+    image: grafana/grafana:latest
+    container_name: agent-grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus
+    networks:
+      - agent-network
+
+volumes:
+  postgres-data:
+  redis-data:
+  rabbitmq-data:
+  prometheus-data:
+  grafana-data:
+
+networks:
+  agent-network:
+    driver: bridge
