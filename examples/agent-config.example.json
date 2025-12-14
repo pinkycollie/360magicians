@@ -1,0 +1,192 @@
+{
+  "system_version": "1.0.0",
+  "configuration": {
+    "agents": [
+      {
+        "agent_id": "data_processor_001",
+        "name": "Data Processing Agent",
+        "type": "internal",
+        "status": "active",
+        "description": "Cleans, transforms, and validates data",
+        "capabilities": [
+          "csv_parsing",
+          "data_validation",
+          "format_conversion",
+          "deduplication",
+          "data_enrichment"
+        ],
+        "model": {
+          "provider": "openai",
+          "model": "gpt-4o",
+          "temperature": 0.3,
+          "max_tokens": 2000
+        },
+        "concurrency": 10,
+        "timeout": 30000,
+        "retry_policy": {
+          "max_attempts": 3,
+          "backoff": "exponential"
+        }
+      },
+      {
+        "agent_id": "chatbot_001",
+        "name": "Conversational AI Bot",
+        "type": "external",
+        "status": "active",
+        "description": "Customer-facing chatbot for multiple channels",
+        "capabilities": [
+          "natural_conversation",
+          "customer_support",
+          "sales_assistant",
+          "booking_assistant"
+        ],
+        "channels": [
+          "website",
+          "mobile_app",
+          "whatsapp",
+          "telegram"
+        ],
+        "model": {
+          "provider": "openai",
+          "model": "gpt-4o",
+          "temperature": 0.7,
+          "max_tokens": 1000
+        },
+        "personality": {
+          "tone": "friendly",
+          "verbosity": "concise",
+          "emoji_usage": true
+        },
+        "guardrails": {
+          "topics_allowed": ["product", "support", "billing"],
+          "topics_blocked": ["medical_advice", "legal_advice"],
+          "content_filtering": true
+        },
+        "handoff_rules": {
+          "triggers": [
+            "user_requests_human",
+            "sentiment_very_negative",
+            "after_3_failed_attempts"
+          ]
+        }
+      }
+    ],
+    "workflows": [
+      {
+        "workflow_id": "customer_onboarding_001",
+        "name": "Customer Onboarding",
+        "description": "Automated customer onboarding workflow",
+        "steps": [
+          {
+            "step": 1,
+            "agent": "data_processor_001",
+            "task": "validate_customer_data",
+            "inputs": ["customer_form"],
+            "outputs": ["validated_data"]
+          },
+          {
+            "step": 2,
+            "agent": "workflow_automation_001",
+            "task": "create_accounts",
+            "depends_on": ["step_1"],
+            "inputs": ["validated_data"],
+            "outputs": ["account_ids"]
+          },
+          {
+            "step": 3,
+            "agents": ["email_agent_001", "chatbot_001"],
+            "task": "send_welcome_message",
+            "parallel": true,
+            "depends_on": ["step_2"],
+            "inputs": ["account_ids"]
+          }
+        ]
+      }
+    ],
+    "model_providers": {
+      "openai": {
+        "enabled": true,
+        "models": ["gpt-4o", "gpt-4-turbo", "gpt-3.5-turbo"],
+        "rate_limits": {
+          "requests_per_minute": 500,
+          "tokens_per_minute": 150000
+        }
+      },
+      "anthropic": {
+        "enabled": true,
+        "models": ["claude-sonnet-4", "claude-opus-4"]
+      },
+      "ollama": {
+        "enabled": true,
+        "endpoint": "http://localhost:11434",
+        "models": ["llama3", "mistral", "codellama"]
+      }
+    },
+    "model_router": {
+      "strategy": "cost_optimization",
+      "fallback_chain": [
+        "primary_model",
+        "backup_model",
+        "local_model"
+      ],
+      "routing_rules": {
+        "simple_tasks": "gpt-3.5-turbo",
+        "complex_tasks": "gpt-4o",
+        "long_context": "claude-sonnet-4",
+        "code_tasks": "codellama"
+      }
+    },
+    "infrastructure": {
+      "message_bus": {
+        "type": "rabbitmq",
+        "url": "amqp://localhost:5672"
+      },
+      "cache": {
+        "type": "redis",
+        "url": "redis://localhost:6379",
+        "ttl": 3600
+      },
+      "database": {
+        "type": "postgresql",
+        "url": "postgresql://localhost:5432/agents"
+      },
+      "vector_store": {
+        "type": "pinecone",
+        "embedding_model": "text-embedding-3-large"
+      }
+    },
+    "monitoring": {
+      "metrics": {
+        "enabled": true,
+        "prometheus_port": 9090
+      },
+      "logging": {
+        "level": "INFO",
+        "format": "json"
+      },
+      "alerting": {
+        "high_error_rate": {
+          "threshold": 5,
+          "notification": "slack"
+        },
+        "high_latency": {
+          "threshold": 5000,
+          "notification": "email"
+        }
+      }
+    },
+    "security": {
+      "authentication": {
+        "type": "jwt",
+        "expiration": "24h"
+      },
+      "rate_limiting": {
+        "requests_per_minute": 100,
+        "burst": 20
+      },
+      "cors": {
+        "origins": ["http://localhost:3000", "https://yourdomain.com"]
+      }
+    }
+  }
+}
