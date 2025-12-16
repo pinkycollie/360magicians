@@ -1,0 +1,34 @@
+{
+  "projects": {
+    "api": {
+      "name": "360magicians-api",
+      "entrypoint": "./edge-functions/api/main.ts",
+      "domain": "api.360magicians.com"
+    },
+    "auth": {
+      "name": "360magicians-auth",
+      "entrypoint": "./edge-functions/auth/main.ts",
+      "domain": "auth.360magicians.com"
+    },
+    "ai": {
+      "name": "360magicians-ai",
+      "entrypoint": "./edge-functions/ai/main.ts",
+      "domain": "ai.360magicians.com"
+    },
+    "sync": {
+      "name": "360magicians-sync",
+      "entrypoint": "./edge-functions/sync/main.ts",
+      "domain": "sync.360magicians.com"
+    },
+    "fibonrose": {
+      "name": "360magicians-fibonrose",
+      "entrypoint": "./edge-functions/fibonrose/main.ts",
+      "domain": "fibonrose.360magicians.com"
+    },
+    "monitor": {
+      "name": "360magicians-monitor",
+      "entrypoint": "./edge-functions/monitor/main.ts",
+      "domain": "monitor.mbtq.dev"
+    }
+  }
+}
