@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Visual System Demo</title>
+    <link rel="stylesheet" href="sign-visual/sign-visual.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 32px;
+            font-size: 14px;
+        }
+        
+        .demo-section {
+            margin-bottom: 32px;
+        }
+        
+        .demo-section h2 {
+            color: #667eea;
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+        
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+        }
+        
+        .demo-btn {
+            padding: 12px 16px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .demo-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .demo-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .info-box {
+            background: #f5f5f5;
+            border-left: 4px solid #667eea;
+            padding: 16px;
+            border-radius: 4px;
+            margin-top: 16px;
+        }
+        
+        .info-box h3 {
+            margin: 0 0 8px 0;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .info-box p {
+            margin: 0;
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .code-block {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            overflow-x: auto;
+            margin-top: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1>🤟 Sign Visual System Demo</h1>
+        <p class="subtitle">
+            Sign language as a primary interaction layer for agentic systems
+        </p>
+        
+        <div class="demo-section">
+            <h2>Core Philosophy</h2>
+            <div class="info-box">
+                <h3>If the system thinks, it signs.</h3>
+                <p>
+                    This is not translation. Not decoration. Not compliance.
+                    Sign language is the <strong>primary UX for cognition</strong> - 
+                    showing what the system is doing, why it paused, and what it needs next.
+                </p>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2>Try Different States</h2>
+            <div class="button-grid">
+                <button class="demo-btn" onclick="emitState('idle')">Idle</button>
+                <button class="demo-btn" onclick="emitState('listening')">Listening</button>
+                <button class="demo-btn" onclick="emitState('processing')">Processing</button>
+                <button class="demo-btn" onclick="emitState('validating')">Validating</button>
+                <button class="demo-btn" onclick="emitState('deciding')">Deciding</button>
+                <button class="demo-btn" onclick="emitState('executing')">Executing</button>
+                <button class="demo-btn" onclick="emitState('completed')">Completed</button>
+                <button class="demo-btn" onclick="emitState('error')">Error</button>
+                <button class="demo-btn" onclick="emitState('waiting_input')">Needs Input</button>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2>Simulate Agent Workflow</h2>
+            <div class="button-grid">
+                <button class="demo-btn" onclick="simulateDataProcessing()">Data Processing</button>
+                <button class="demo-btn" onclick="simulateValidation()">Validation Flow</button>
+                <button class="demo-btn" onclick="simulateDecision()">Decision Making</button>
+                <button class="demo-btn" onclick="simulateError()">Error Scenario</button>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2>Integration Example</h2>
+            <div class="code-block">
+// Initialize the sign visual system<br>
+const signerPanel = initializeSignVisual();<br>
+<br>
+// Emit state changes<br>
+signStateHelpers.startListening('MagicianCore');<br>
+signStateHelpers.startProcessing('MagicianCore', 0.85);<br>
+signStateHelpers.complete('MagicianCore');<br>
+<br>
+// Or use manual emission<br>
+signEmit.processing('DataProcessor', 0.92);<br>
+signEmit.validating('Validator', 0.78);<br>
+signEmit.complete('DataProcessor');
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2>Key Features</h2>
+            <div class="info-box">
+                <h3>✅ What's Implemented</h3>
+                <p>
+                    • State machine with 9 distinct cognitive states<br>
+                    • Event bus for state change propagation<br>
+                    • Persistent, dockable sign panel (right side of screen)<br>
+                    • Avatar renderer with visual cues<br>
+                    • Fallback renderer for low-bandwidth<br>
+                    • Confidence indicators<br>
+                    • Semantic mapping (intent.map.json, system.map.json)<br>
+                    • Realtime and playback providers<br>
+                    • React hooks for easy integration<br>
+                    • Full TypeScript support
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module">
+        // Import sign visual system
+        import { SignerPanel } from './sign-visual/components/SignerPanel.tsx';
+        import { signStateHelpers } from './sign-visual/hooks/useSignState.ts';
+        import { realtimeProvider } from './sign-visual/providers/realtime.ts';
+        
+        // Initialize sign panel
+        const container = document.createElement('div');
+        container.id = 'sign-panel-container';
+        document.body.appendChild(container);
+        
+        const signerPanel = new SignerPanel(container, {
+            position: 'right',
+            size: 'medium',
+            resizable: true,
+            draggable: true
+        });
+        
+        // Subscribe to state changes
+        realtimeProvider.onStateChange((event) => {
+            signerPanel.updateState(event);
+            console.log('[Demo] State changed:', event);
+        });
+        
+        // Make functions globally available
+        window.emitState = function(state) {
+            const confidenceMap = {
+                'idle': undefined,
+                'listening': undefined,
+                'processing': 0.85,
+                'validating': 0.78,
+                'deciding': 0.65,
+                'executing': 0.90,
+                'completed': undefined,
+                'error': undefined,
+                'waiting_input': undefined
+            };
+            
+            realtimeProvider.emitStateChange({
+                actor: 'DemoAgent',
+                state: state,
+                confidence: confidenceMap[state],
+                requiresUser: state === 'waiting_input',
+                context: {
+                    action: `Demonstrating ${state} state`
+                }
+            });
+        };
+        
+        window.simulateDataProcessing = async function() {
+            signStateHelpers.startListening('DataProcessor');
+            await sleep(1000);
+            signStateHelpers.startProcessing('DataProcessor', 0.88);
+            await sleep(2000);
+            signStateHelpers.startValidating('DataProcessor', 0.92);
+            await sleep(1500);
+            signStateHelpers.complete('DataProcessor');
+        };
+        
+        window.simulateValidation = async function() {
+            signStateHelpers.startValidating('Validator', 0.75);
+            await sleep(1500);
+            signStateHelpers.startDeciding('Validator', 0.68);
+            await sleep(1500);
+            signStateHelpers.complete('Validator');
+        };
+        
+        window.simulateDecision = async function() {
+            signStateHelpers.startListening('DecisionAgent');
+            await sleep(1000);
+            signStateHelpers.startProcessing('DecisionAgent', 0.80);
+            await sleep(1500);
+            signStateHelpers.startDeciding('DecisionAgent', 0.55);
+            await sleep(2000);
+            signStateHelpers.startExecuting('DecisionAgent', 'Executing chosen action');
+            await sleep(1500);
+            signStateHelpers.complete('DecisionAgent');
+        };
+        
+        window.simulateError = async function() {
+            signStateHelpers.startProcessing('ErrorAgent', 0.90);
+            await sleep(1500);
+            signStateHelpers.error('ErrorAgent', 'Simulated error condition');
+            await sleep(2000);
+            signStateHelpers.idle('ErrorAgent');
+        };
+        
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+        
+        // Initial state
+        window.emitState('idle');
+        
+        console.log('[Demo] Sign Visual System initialized');
+    </script>
+</body>
+</html>

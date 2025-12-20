@@ -1,0 +1,17 @@
+{
+  "state": "listening",
+  "description": "System is actively receiving and understanding user input",
+  "visualCues": {
+    "posture": "leaning_forward",
+    "handPosition": "open_receiving",
+    "facialExpression": "focused_attention",
+    "movement": "subtle_tracking"
+  },
+  "signSemantics": {
+    "primary": "receiving",
+    "secondary": "understanding",
+    "intensity": "medium"
+  },
+  "duration": "variable",
+  "transitions": ["processing", "idle", "error"]
+}

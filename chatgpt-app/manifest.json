@@ -1,0 +1,159 @@
+{
+  "schema_version": "1.0.0",
+  "name": "360 Magicians with Sign Visual State",
+  "version": "1.0.0",
+  "description": "Agent Development Kit with sign language as a primary interaction layer for visual state representation",
+  "author": "360 Magicians",
+  "category": "Agent Transparency / Visual Reasoning",
+  "capabilities": {
+    "sign_visual_state": {
+      "primary": true,
+      "description": "Live sign language visualization of agent cognitive state",
+      "modes": ["realtime", "async", "replay"],
+      "features": {
+        "state_visualization": true,
+        "confidence_display": true,
+        "intent_mapping": true,
+        "playback_controls": true,
+        "customizable_speed": true,
+        "user_controllable": true
+      },
+      "states": [
+        "idle",
+        "listening",
+        "processing",
+        "validating",
+        "deciding",
+        "executing",
+        "completed",
+        "error",
+        "waiting_input"
+      ],
+      "accessibility": {
+        "primary_modality": "sign_language",
+        "text_optional": true,
+        "buttons_secondary": true,
+        "meaning_visible": true
+      }
+    },
+    "agent_management": {
+      "internal_agents": true,
+      "external_agents": true,
+      "specialized_operators": true,
+      "multi_provider_llm": true
+    },
+    "workflow_orchestration": {
+      "visual_builder": true,
+      "multi_agent_coordination": true,
+      "conditional_routing": true
+    }
+  },
+  "requirements": {
+    "browser": "modern (Chrome 90+, Firefox 88+, Safari 14+)",
+    "javascript": "ES6+",
+    "typescript": "4.0+",
+    "no_ie11": true
+  },
+  "ui_components": {
+    "signer_panel": {
+      "type": "persistent",
+      "dockable": true,
+      "resizable": true,
+      "draggable": true,
+      "positions": ["left", "right", "top", "bottom"],
+      "sizes": ["small", "medium", "large"],
+      "never_modal": true
+    },
+    "state_indicator": {
+      "type": "visual_feedback",
+      "shows": ["state", "confidence", "warnings"]
+    },
+    "confidence_cue": {
+      "type": "transparency_indicator",
+      "displays": ["certainty", "uncertainty", "warnings"]
+    }
+  },
+  "integration_points": {
+    "magician_core": {
+      "invokes_signer_by_default": true,
+      "emits_state_events": true
+    },
+    "validator": {
+      "state_modes": ["deciding", "warning"],
+      "high_visibility": true
+    },
+    "compliance": {
+      "caution_semantics": true,
+      "urgent_priority": true
+    },
+    "errors": {
+      "explicit_signing": true,
+      "no_silent_fails": true,
+      "non_ambiguous": true
+    }
+  },
+  "philosophy": {
+    "core_principle": "If the system thinks, it signs. If it cannot sign, it should not act.",
+    "not_translation": true,
+    "not_decoration": true,
+    "not_compliance": true,
+    "interaction_primitive": true,
+    "text_optional": true,
+    "sign_authoritative": true
+  },
+  "positioning": {
+    "not_accessibility_compliance": true,
+    "category": "Agent Transparency",
+    "subcategory": "Visual Reasoning",
+    "innovation": "Primary UX for cognition"
+  },
+  "semantic_mapping": {
+    "intent_map": "./sign-visual/semantics/intent.map.json",
+    "system_map": "./sign-visual/semantics/system.map.json",
+    "versioned": true,
+    "governance": "deaf_contributor_approval"
+  },
+  "governance": {
+    "semantic_changes": {
+      "requires_deaf_approval": true,
+      "no_auto_updates": true,
+      "version_bump_on_breaking": true
+    }
+  },
+  "api": {
+    "state_machine": "./sign-visual/engine/stateMachine.ts",
+    "event_bus": "./sign-visual/engine/eventBus.ts",
+    "realtime_provider": "./sign-visual/providers/realtime.ts",
+    "playback_provider": "./sign-visual/providers/playback.ts"
+  },
+  "hooks": {
+    "useSignState": "./sign-visual/hooks/useSignState.ts",
+    "useIntentMap": "./sign-visual/hooks/useIntentMap.ts"
+  },
+  "components": {
+    "SignerPanel": "./sign-visual/components/SignerPanel.tsx",
+    "StateIndicator": "./sign-visual/components/StateIndicator.tsx",
+    "ConfidenceCue": "./sign-visual/components/ConfidenceCue.tsx"
+  },
+  "license": "Open Source",
+  "documentation": {
+    "specification": "./sign-visual-system.md",
+    "implementation_plan": "./IMPLEMENTATION_PLAN.md",
+    "main_readme": "./README.md"
+  },
+  "tags": [
+    "sign-language",
+    "agent-transparency",
+    "visual-reasoning",
+    "accessibility-first",
+    "cognitive-state",
+    "deaf-centered",
+    "interaction-primitive",
+    "state-visualization"
+  ],
+  "definition_of_done": {
+    "deaf_user_understands_state_without_text": true,
+    "no_action_without_visible_sign_state": true,
+    "system_silence_never_ambiguous": true
+  }
+}

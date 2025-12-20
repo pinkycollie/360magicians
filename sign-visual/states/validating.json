@@ -1,0 +1,17 @@
+{
+  "state": "validating",
+  "description": "System is checking and verifying information",
+  "visualCues": {
+    "posture": "careful",
+    "handPosition": "checking_gesture",
+    "facialExpression": "scrutinizing",
+    "movement": "deliberate_verification"
+  },
+  "signSemantics": {
+    "primary": "checking",
+    "secondary": "verifying",
+    "intensity": "high"
+  },
+  "duration": "short_to_medium",
+  "transitions": ["deciding", "executing", "error", "waiting_input"]
+}

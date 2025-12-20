@@ -1,0 +1,17 @@
+{
+  "state": "error",
+  "description": "System encountered an error or problem",
+  "visualCues": {
+    "posture": "alert",
+    "handPosition": "stop_warning",
+    "facialExpression": "concerned",
+    "movement": "attention_grabbing"
+  },
+  "signSemantics": {
+    "primary": "problem",
+    "secondary": "error",
+    "intensity": "urgent"
+  },
+  "duration": "persistent_until_acknowledged",
+  "transitions": ["idle", "listening", "processing"]
+}
