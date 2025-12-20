@@ -174,7 +174,9 @@
         confidenceBar = document.createElement('div');
         confidenceBar.className = 'confidence-bar';
         const fallbackContainer = this.panel.querySelector('.fallback-container');
-        fallbackContainer.appendChild(confidenceBar);
+        if (fallbackContainer) {
+          fallbackContainer.appendChild(confidenceBar);
+        }
       }
 
       const percentage = Math.round(confidence * 100);

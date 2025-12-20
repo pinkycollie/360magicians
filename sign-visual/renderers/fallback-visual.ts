@@ -86,7 +86,7 @@ export class FallbackVisual {
       confidenceBar = document.createElement('div');
       confidenceBar.className = 'confidence-bar';
       const fallbackContainer = this.container.querySelector('.fallback-container');
-      if (fallbackContainer && !fallbackContainer.contains(confidenceBar)) {
+      if (fallbackContainer) {
         fallbackContainer.appendChild(confidenceBar);
       }
     }
@@ -109,7 +109,7 @@ export class FallbackVisual {
       contextBox = document.createElement('div');
       contextBox.className = 'context-box';
       const fallbackContainer = this.container.querySelector('.fallback-container');
-      if (fallbackContainer && !fallbackContainer.contains(contextBox)) {
+      if (fallbackContainer) {
         fallbackContainer.appendChild(contextBox);
       }
     }
