@@ -366,8 +366,73 @@ For issues and questions:
 
 This platform is provided as-is for use in building AI agent systems.
 
+## Sign Language Visual System
+
+### 🤟 Primary Interaction Layer
+
+The 360 Magicians ADK includes a groundbreaking **Sign Language Visual System** that treats sign language as a primary interaction primitive, not just accessibility compliance.
+
+**Core Philosophy**: *If the system thinks, it signs. If it cannot sign, it should not act.*
+
+### Features
+
+- **Live State Visualization**: Real-time sign language representation of agent cognitive states
+- **9 Distinct States**: idle, listening, processing, validating, deciding, executing, completed, error, waiting_input
+- **Persistent Signer Panel**: Dockable, resizable panel that's never hidden behind modals
+- **Confidence Indicators**: Visual display of system certainty and uncertainty
+- **Semantic Mapping**: Intent and system actions mapped to sign semantics
+- **Playback & Replay**: Review agent state sequences at your preferred speed
+- **User Controllable**: Size, speed, position all customizable
+- **Dual Rendering**: Rich avatar mode or lightweight fallback for low bandwidth
+
+### What Makes This Different
+
+Most platforms treat sign language as accessibility compliance.  
+**We treat it as primary UX for cognition.**
+
+- Text becomes optional
+- Buttons become secondary  
+- Meaning becomes visible
+
+### Quick Start
+
+```html
+<!-- Add the sign visual system to your page -->
+<link rel="stylesheet" href="sign-visual/sign-visual.css">
+<script type="module" src="sign-visual/index.ts"></script>
+
+<script type="module">
+  import { signStateHelpers } from './sign-visual/hooks/useSignState.ts';
+  
+  // Emit state changes
+  signStateHelpers.startListening('MagicianCore');
+  signStateHelpers.startProcessing('MagicianCore', 0.85);
+  signStateHelpers.complete('MagicianCore');
+</script>
+```
+
+### Try the Demo
+
+Open [`sign-visual-demo.html`](sign-visual-demo.html) in your browser to see the system in action.
+
+### Documentation
+
+- [Sign Visual System Specification](sign-visual-system.md) - Complete system design
+- [Implementation Plan](IMPLEMENTATION_PLAN.md) - Technical implementation details
+- [ChatGPT App Store Manifest](chatgpt-app/manifest.json) - Capability declaration
+
+### Definition of Done
+
+✅ Deaf user understands system state without reading text  
+✅ No action happens without a visible sign state  
+✅ System silence is never ambiguous
+
 ## Roadmap
 
+- [x] Sign language visual system (v1.0.0)
+- [ ] Video-based sign language avatars
+- [ ] Multilingual sign support (ASL, BSL, JSL, etc.)
+- [ ] Deaf community governance for semantic mappings
 - [ ] Visual workflow builder with drag-and-drop
 - [ ] Real-time agent performance charts
 - [ ] Agent marketplace for sharing configurations
