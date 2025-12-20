@@ -13,7 +13,7 @@ class AgentManager {
 
     init() {
         // Emit sign state: initializing
-        if (window.signStateHelpers) {
+        if (typeof window !== 'undefined' && window.signStateHelpers) {
             window.signStateHelpers.startProcessing('AgentManager', 0.9);
         }
 
@@ -22,7 +22,7 @@ class AgentManager {
         this.updateDashboard();
 
         // Complete initialization
-        if (window.signStateHelpers) {
+        if (typeof window !== 'undefined' && window.signStateHelpers) {
             setTimeout(() => {
                 window.signStateHelpers.complete('AgentManager');
                 setTimeout(() => {
@@ -203,7 +203,7 @@ class AgentManager {
         if (!agent) return;
 
         // Emit sign state: agent selected
-        if (window.signStateHelpers) {
+        if (typeof window !== 'undefined' && window.signStateHelpers) {
             window.signStateHelpers.startListening('AgentManager');
         }
 
@@ -217,7 +217,7 @@ class AgentManager {
         showAgentForm();
 
         // Complete after form shown
-        if (window.signStateHelpers) {
+        if (typeof window !== 'undefined' && window.signStateHelpers) {
             setTimeout(() => {
                 window.signStateHelpers.complete('AgentManager');
             }, 500);
@@ -261,7 +261,7 @@ class AgentManager {
 
     switchSection(sectionId) {
         // Emit sign state: navigating
-        if (window.signStateHelpers) {
+        if (typeof window !== 'undefined' && window.signStateHelpers) {
             window.signStateHelpers.startProcessing('Navigation', 0.95);
         }
 
@@ -280,7 +280,7 @@ class AgentManager {
         document.getElementById(sectionId)?.classList.add('active');
 
         // Complete navigation
-        if (window.signStateHelpers) {
+        if (typeof window !== 'undefined' && window.signStateHelpers) {
             setTimeout(() => {
                 window.signStateHelpers.complete('Navigation');
             }, 300);

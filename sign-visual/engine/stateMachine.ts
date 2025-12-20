@@ -138,7 +138,13 @@ export class SignStateMachine {
       waiting_input: ['listening', 'processing', 'idle']
     };
 
-    return validTransitions[from]?.includes(to) || false;
+    const isValid = validTransitions[from]?.includes(to) || false;
+    
+    if (!isValid) {
+      console.warn(`[StateMachine] Invalid state transition from ${from} to ${to}`);
+    }
+    
+    return isValid;
   }
 
   /**

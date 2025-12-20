@@ -42,15 +42,22 @@
     }
 
     on(state, callback) {
-      const listeners = this.listeners.get(state) || [];
-      listeners.push(callback);
-      this.listeners.set(state, listeners);
+      if (!this.listeners.has(state)) {
+        this.listeners.set(state, []);
+      }
+      
+      const listeners = this.listeners.get(state);
+      if (!listeners.includes(callback)) {
+        listeners.push(callback);
+        this.listeners.set(state, listeners);
+      }
 
       return () => {
         const currentListeners = this.listeners.get(state) || [];
         const index = currentListeners.indexOf(callback);
         if (index > -1) {
           currentListeners.splice(index, 1);
+          this.listeners.set(state, currentListeners);
         }
       };
     }
