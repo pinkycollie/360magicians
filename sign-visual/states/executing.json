@@ -1,0 +1,17 @@
+{
+  "state": "executing",
+  "description": "System is performing an action or fetching data",
+  "visualCues": {
+    "posture": "active",
+    "handPosition": "doing_gesture",
+    "facialExpression": "determined",
+    "movement": "purposeful_action"
+  },
+  "signSemantics": {
+    "primary": "executing",
+    "secondary": "fetching",
+    "intensity": "high"
+  },
+  "duration": "variable",
+  "transitions": ["completed", "error", "processing", "waiting_input"]
+}

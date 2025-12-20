@@ -1,0 +1,674 @@
+/**
+ * Sign Visual System Styles
+ * CSS for sign language visual components
+ */
+
+/* =========================
+   Signer Panel
+   ========================= */
+
+.signer-panel {
+  position: fixed;
+  background: #ffffff;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+}
+
+/* Panel Positions */
+.signer-panel.position-right {
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.signer-panel.position-left {
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.signer-panel.position-top {
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.signer-panel.position-bottom {
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Panel Sizes */
+.signer-panel.size-small {
+  width: 200px;
+  height: 300px;
+}
+
+.signer-panel.size-medium {
+  width: 300px;
+  height: 400px;
+}
+
+.signer-panel.size-large {
+  width: 400px;
+  height: 500px;
+}
+
+/* Minimized State */
+.signer-panel.minimized {
+  height: 50px !important;
+  overflow: hidden;
+}
+
+.signer-panel.minimized .panel-body,
+.signer-panel.minimized .panel-footer {
+  display: none;
+}
+
+/* Panel Header */
+.panel-header {
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 10px 10px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+}
+
+.panel-title {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.panel-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.control-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.control-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.control-btn:active {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* Panel Body */
+.panel-body {
+  flex: 1;
+  padding: 16px;
+  overflow: hidden;
+  position: relative;
+}
+
+.renderer-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Panel Footer */
+.panel-footer {
+  padding: 12px 16px;
+  background: #f5f5f5;
+  border-top: 1px solid #e0e0e0;
+  border-radius: 0 0 10px 10px;
+}
+
+.status-text {
+  font-size: 12px;
+  color: #666;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Resize Handle */
+.resize-handle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  cursor: nwse-resize;
+  background: linear-gradient(135deg, transparent 50%, #999 50%);
+  border-radius: 0 0 10px 0;
+}
+
+/* =========================
+   Signer Avatar
+   ========================= */
+
+.signer-avatar {
+  width: 100%;
+  height: 100%;
+}
+
+.avatar-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.avatar-figure {
+  position: relative;
+  width: 120px;
+  height: 160px;
+  transition: all 0.3s ease;
+}
+
+.avatar-head {
+  width: 60px;
+  height: 60px;
+  background: #ffdbac;
+  border-radius: 50%;
+  margin: 0 auto 10px;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.facial-expression {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.facial-expression.attentive::before { content: '😊'; }
+.facial-expression.focused::before { content: '👀'; }
+.facial-expression.concentrated::before { content: '🤔'; }
+.facial-expression.scrutinizing::before { content: '🧐'; }
+.facial-expression.contemplative::before { content: '💭'; }
+.facial-expression.determined::before { content: '💪'; }
+.facial-expression.satisfied::before { content: '😌'; }
+.facial-expression.concerned::before { content: '😟'; }
+.facial-expression.questioning::before { content: '❓'; }
+
+.avatar-body {
+  width: 100%;
+  height: 90px;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+
+.hand {
+  width: 30px;
+  height: 30px;
+  background: #ffdbac;
+  border-radius: 50%;
+  position: absolute;
+  transition: all 0.4s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.hand.left { left: 10px; top: 20px; }
+.hand.right { right: 10px; top: 20px; }
+
+/* Hand Positions */
+.hand.resting { top: 60px; }
+.hand.open { transform: scale(1.2); }
+.hand.thinking { top: 10px; }
+.hand.checking { top: 30px; transform: rotate(15deg); }
+.hand.comparing { top: 25px; }
+.hand.doing { top: 40px; transform: translateY(-10px); }
+.hand.completion { top: 20px; transform: scale(1.1); }
+.hand.warning { transform: scale(1.3) rotate(-10deg); }
+.hand.requesting { top: 15px; transform: translateY(-5px); }
+
+/* Animations */
+@keyframes minimal {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+@keyframes tracking {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(3px); }
+}
+
+@keyframes rhythmic {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes deliberate {
+  0%, 100% { transform: rotate(0deg); }
+  33% { transform: rotate(5deg); }
+  66% { transform: rotate(-5deg); }
+}
+
+@keyframes alternating {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-5px); }
+}
+
+@keyframes purposeful {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes confirmatory {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@keyframes alert {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-10deg); }
+  75% { transform: rotate(10deg); }
+}
+
+@keyframes inviting {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.animation-minimal { animation: minimal 2s ease-in-out infinite; }
+.animation-tracking { animation: tracking 1.5s ease-in-out infinite; }
+.animation-rhythmic { animation: rhythmic 1s ease-in-out infinite; }
+.animation-deliberate { animation: deliberate 2s ease-in-out infinite; }
+.animation-alternating { animation: alternating 1.5s ease-in-out infinite; }
+.animation-purposeful { animation: purposeful 1s ease-in-out infinite; }
+.animation-confirmatory { animation: confirmatory 1s ease-in-out 3; }
+.animation-alert { animation: alert 0.5s ease-in-out infinite; }
+.animation-inviting { animation: inviting 1.5s ease-in-out infinite; }
+
+.state-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+}
+
+/* Confidence Indicator */
+.confidence-indicator {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: white;
+  white-space: nowrap;
+}
+
+.confidence-indicator.confidence-high {
+  background: #4CAF50;
+}
+
+.confidence-indicator.confidence-medium {
+  background: #FF9800;
+}
+
+.confidence-indicator.confidence-low {
+  background: #F44336;
+}
+
+/* =========================
+   Fallback Visual
+   ========================= */
+
+.fallback-visual {
+  width: 100%;
+  height: 100%;
+}
+
+.fallback-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px;
+}
+
+.state-icon {
+  font-size: 64px;
+  transition: all 0.3s ease;
+}
+
+.state-text {
+  text-align: center;
+}
+
+.state-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.state-description {
+  font-size: 12px;
+  color: #666;
+}
+
+/* Icon Animations */
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.state-icon.pulse { animation: pulse 1.5s ease-in-out infinite; }
+.state-icon.spin { animation: spin 2s linear infinite; }
+.state-icon.bounce { animation: bounce 1s ease-in-out infinite; }
+.state-icon.shake { animation: shake 0.5s ease-in-out infinite; }
+
+/* Confidence Bar */
+.confidence-bar {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.confidence-label {
+  font-size: 11px;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.confidence-fill {
+  height: 6px;
+  background: linear-gradient(90deg, #F44336 0%, #FF9800 50%, #4CAF50 100%);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.confidence-value {
+  font-size: 11px;
+  color: #333;
+  font-weight: 600;
+  text-align: right;
+  margin-top: 2px;
+}
+
+/* Context Box */
+.context-box {
+  width: 100%;
+  margin-top: 12px;
+  padding: 8px;
+  background: #f5f5f5;
+  border-radius: 6px;
+  font-size: 11px;
+  color: #333;
+  line-height: 1.4;
+}
+
+/* =========================
+   State Indicator
+   ========================= */
+
+.state-indicator {
+  display: inline-block;
+}
+
+.indicator-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.indicator-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.state-indicator.size-small .indicator-icon {
+  width: 30px;
+  height: 30px;
+  font-size: 16px;
+}
+
+.state-indicator.size-large .indicator-icon {
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+}
+
+.indicator-icon.pulsing {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.indicator-label {
+  display: flex;
+  flex-direction: column;
+}
+
+.label-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.label-description {
+  font-size: 11px;
+  color: #666;
+}
+
+/* =========================
+   Confidence Cue
+   ========================= */
+
+.confidence-cue {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #f5f5f5;
+}
+
+.confidence-container,
+.uncertainty-container,
+.warning-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.confidence-cue.size-small {
+  padding: 6px 12px;
+}
+
+.confidence-cue.size-large {
+  padding: 10px 20px;
+}
+
+/* Confidence Styles */
+.confidence-bar-container {
+  width: 120px;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.confidence-bar-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+  border-radius: 4px;
+}
+
+.confidence-bar-fill.confidence-high {
+  background: #4CAF50;
+}
+
+.confidence-bar-fill.confidence-medium {
+  background: #FF9800;
+}
+
+.confidence-bar-fill.confidence-low {
+  background: #F44336;
+}
+
+/* Warning Styles */
+.warning-container {
+  background: #FFF3CD;
+  border: 1px solid #FFC107;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.warning-icon {
+  font-size: 24px;
+}
+
+.warning-label {
+  font-weight: 600;
+  color: #856404;
+  font-size: 12px;
+}
+
+.warning-message {
+  font-size: 11px;
+  color: #856404;
+  margin-top: 2px;
+}
+
+.warning-pulse {
+  animation: pulse 1s ease-in-out infinite;
+}
+
+/* Uncertainty Styles */
+.uncertainty-icon {
+  font-size: 24px;
+}
+
+.uncertainty-label {
+  font-weight: 600;
+  color: #666;
+  font-size: 12px;
+}
+
+.uncertainty-level {
+  font-size: 11px;
+  color: #666;
+  margin-top: 2px;
+}
+
+/* =========================
+   Responsive Design
+   ========================= */
+
+@media (max-width: 768px) {
+  .signer-panel.size-medium,
+  .signer-panel.size-large {
+    width: 90vw;
+    max-width: 300px;
+  }
+  
+  .signer-panel.position-left,
+  .signer-panel.position-right {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%) translateY(-50%);
+  }
+}
+
+/* =========================
+   Dark Mode Support
+   ========================= */
+
+@media (prefers-color-scheme: dark) {
+  .signer-panel {
+    background: #2c2c2c;
+    border-color: #444;
+  }
+  
+  .panel-footer {
+    background: #1a1a1a;
+    border-color: #444;
+  }
+  
+  .status-text {
+    color: #ccc;
+  }
+  
+  .state-title,
+  .label-text {
+    color: #fff;
+  }
+  
+  .state-description,
+  .label-description {
+    color: #aaa;
+  }
+  
+  .confidence-cue {
+    background: #1a1a1a;
+  }
+  
+  .context-box {
+    background: #1a1a1a;
+    color: #ccc;
+  }
+}
+
+/* =========================
+   Print Styles
+   ========================= */
+
+@media print {
+  .signer-panel {
+    display: none;
+  }
+}

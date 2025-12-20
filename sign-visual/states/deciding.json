@@ -1,0 +1,17 @@
+{
+  "state": "deciding",
+  "description": "System is making a decision or choosing an action",
+  "visualCues": {
+    "posture": "weighing_options",
+    "handPosition": "comparing_gesture",
+    "facialExpression": "contemplative",
+    "movement": "alternating_consideration"
+  },
+  "signSemantics": {
+    "primary": "deciding",
+    "secondary": "evaluating",
+    "intensity": "medium_to_high"
+  },
+  "duration": "short",
+  "transitions": ["executing", "validating", "error", "waiting_input"]
+}

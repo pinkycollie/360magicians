@@ -1,0 +1,17 @@
+{
+  "state": "processing",
+  "description": "System is analyzing and processing information",
+  "visualCues": {
+    "posture": "centered",
+    "handPosition": "thinking_gesture",
+    "facialExpression": "concentrated",
+    "movement": "rhythmic_processing"
+  },
+  "signSemantics": {
+    "primary": "analyzing",
+    "secondary": "working",
+    "intensity": "high"
+  },
+  "duration": "variable",
+  "transitions": ["validating", "deciding", "executing", "completed", "error"]
+}

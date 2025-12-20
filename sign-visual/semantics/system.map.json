@@ -1,0 +1,96 @@
+{
+  "description": "Maps system actions to sign semantic representations",
+  "version": "1.0.0",
+  "mappings": {
+    "agent_start": {
+      "signSemantic": "beginning",
+      "state": "processing",
+      "visualPriority": "high",
+      "requiresConfidence": false
+    },
+    "agent_thinking": {
+      "signSemantic": "analyzing",
+      "state": "processing",
+      "visualPriority": "high",
+      "requiresConfidence": true
+    },
+    "agent_validating": {
+      "signSemantic": "checking",
+      "state": "validating",
+      "visualPriority": "high",
+      "requiresConfidence": true
+    },
+    "agent_deciding": {
+      "signSemantic": "choosing",
+      "state": "deciding",
+      "visualPriority": "high",
+      "requiresConfidence": true
+    },
+    "agent_executing": {
+      "signSemantic": "doing",
+      "state": "executing",
+      "visualPriority": "high",
+      "requiresConfidence": false
+    },
+    "agent_fetching": {
+      "signSemantic": "retrieving",
+      "state": "executing",
+      "visualPriority": "medium",
+      "requiresConfidence": false
+    },
+    "agent_success": {
+      "signSemantic": "succeeded",
+      "state": "completed",
+      "visualPriority": "medium",
+      "requiresConfidence": false
+    },
+    "agent_error": {
+      "signSemantic": "failed",
+      "state": "error",
+      "visualPriority": "urgent",
+      "requiresConfidence": false
+    },
+    "agent_warning": {
+      "signSemantic": "cautioning",
+      "state": "validating",
+      "visualPriority": "urgent",
+      "requiresConfidence": true
+    },
+    "agent_waiting": {
+      "signSemantic": "pausing",
+      "state": "waiting_input",
+      "visualPriority": "high",
+      "requiresConfidence": false
+    },
+    "agent_uncertain": {
+      "signSemantic": "uncertain",
+      "state": "deciding",
+      "visualPriority": "high",
+      "requiresConfidence": true
+    },
+    "compliance_check": {
+      "signSemantic": "verifying_compliance",
+      "state": "validating",
+      "visualPriority": "urgent",
+      "requiresConfidence": true
+    },
+    "security_alert": {
+      "signSemantic": "security_warning",
+      "state": "error",
+      "visualPriority": "critical",
+      "requiresConfidence": false
+    },
+    "data_processing": {
+      "signSemantic": "processing_data",
+      "state": "processing",
+      "visualPriority": "medium",
+      "requiresConfidence": false
+    },
+    "model_switching": {
+      "signSemantic": "changing_approach",
+      "state": "deciding",
+      "visualPriority": "medium",
+      "requiresConfidence": true
+    }
+  }
+}

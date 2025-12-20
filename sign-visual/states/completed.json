@@ -1,0 +1,17 @@
+{
+  "state": "completed",
+  "description": "System has successfully completed the task",
+  "visualCues": {
+    "posture": "satisfied",
+    "handPosition": "completion_gesture",
+    "facialExpression": "accomplished",
+    "movement": "confirmatory"
+  },
+  "signSemantics": {
+    "primary": "done",
+    "secondary": "success",
+    "intensity": "medium"
+  },
+  "duration": "short",
+  "transitions": ["idle", "listening"]
+}

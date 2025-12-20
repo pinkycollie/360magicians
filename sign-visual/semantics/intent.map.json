@@ -1,0 +1,66 @@
+{
+  "description": "Maps user intents to sign semantic representations",
+  "version": "1.0.0",
+  "mappings": {
+    "query": {
+      "signSemantic": "asking",
+      "visualPriority": "high",
+      "confidence": "required",
+      "gestures": ["question_mark", "inquiry"]
+    },
+    "command": {
+      "signSemantic": "directing",
+      "visualPriority": "high",
+      "confidence": "optional",
+      "gestures": ["pointing", "instruction"]
+    },
+    "confirmation": {
+      "signSemantic": "agreeing",
+      "visualPriority": "medium",
+      "confidence": "optional",
+      "gestures": ["nodding", "affirming"]
+    },
+    "rejection": {
+      "signSemantic": "disagreeing",
+      "visualPriority": "medium",
+      "confidence": "optional",
+      "gestures": ["shaking_head", "negating"]
+    },
+    "request_help": {
+      "signSemantic": "requesting_assistance",
+      "visualPriority": "high",
+      "confidence": "optional",
+      "gestures": ["help_gesture", "pleading"]
+    },
+    "express_confusion": {
+      "signSemantic": "confused",
+      "visualPriority": "high",
+      "confidence": "required",
+      "gestures": ["confusion_gesture", "questioning"]
+    },
+    "provide_information": {
+      "signSemantic": "informing",
+      "visualPriority": "medium",
+      "confidence": "optional",
+      "gestures": ["explaining", "sharing"]
+    },
+    "cancel": {
+      "signSemantic": "stopping",
+      "visualPriority": "urgent",
+      "confidence": "optional",
+      "gestures": ["stop_gesture", "canceling"]
+    },
+    "wait": {
+      "signSemantic": "pausing",
+      "visualPriority": "medium",
+      "confidence": "optional",
+      "gestures": ["wait_gesture", "holding"]
+    },
+    "continue": {
+      "signSemantic": "proceeding",
+      "visualPriority": "medium",
+      "confidence": "optional",
+      "gestures": ["continue_gesture", "advancing"]
+    }
+  }
+}

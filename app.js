@@ -12,9 +12,24 @@ class AgentManager {
     }
 
     init() {
+        // Emit sign state: initializing
+        if (typeof window !== 'undefined' && window.signStateHelpers) {
+            window.signStateHelpers.startProcessing('AgentManager', 0.9);
+        }
+
         this.loadFromSchema();
         this.setupEventListeners();
         this.updateDashboard();
+
+        // Complete initialization
+        if (typeof window !== 'undefined' && window.signStateHelpers) {
+            setTimeout(() => {
+                window.signStateHelpers.complete('AgentManager');
+                setTimeout(() => {
+                    window.signStateHelpers.idle('AgentManager');
+                }, 500);
+            }, 500);
+        }
     }
 
     loadFromSchema() {
@@ -187,6 +202,11 @@ class AgentManager {
         const agent = this.agents.find(a => a.id === agentId);
         if (!agent) return;
 
+        // Emit sign state: agent selected
+        if (typeof window !== 'undefined' && window.signStateHelpers) {
+            window.signStateHelpers.startListening('AgentManager');
+        }
+
         // Populate form
         document.getElementById('agent-name').value = agent.name;
         document.getElementById('agent-type').value = agent.type;
@@ -195,6 +215,13 @@ class AgentManager {
         document.getElementById('agent-model').value = agent.model;
         
         showAgentForm();
+
+        // Complete after form shown
+        if (typeof window !== 'undefined' && window.signStateHelpers) {
+            setTimeout(() => {
+                window.signStateHelpers.complete('AgentManager');
+            }, 500);
+        }
     }
 
     setupEventListeners() {
@@ -233,6 +260,11 @@ class AgentManager {
     }
 
     switchSection(sectionId) {
+        // Emit sign state: navigating
+        if (typeof window !== 'undefined' && window.signStateHelpers) {
+            window.signStateHelpers.startProcessing('Navigation', 0.95);
+        }
+
         // Update nav buttons
         document.querySelectorAll('.nav-btn').forEach(btn => {
             btn.classList.remove('active');
@@ -246,6 +278,13 @@ class AgentManager {
             section.classList.remove('active');
         });
         document.getElementById(sectionId)?.classList.add('active');
+
+        // Complete navigation
+        if (typeof window !== 'undefined' && window.signStateHelpers) {
+            setTimeout(() => {
+                window.signStateHelpers.complete('Navigation');
+            }, 300);
+        }
     }
 
     switchTab(button, tabId) {

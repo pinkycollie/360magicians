@@ -1,0 +1,17 @@
+{
+  "state": "idle",
+  "description": "System is idle, waiting for user input",
+  "visualCues": {
+    "posture": "neutral",
+    "handPosition": "resting",
+    "facialExpression": "attentive",
+    "movement": "minimal"
+  },
+  "signSemantics": {
+    "primary": "ready",
+    "secondary": "waiting",
+    "intensity": "low"
+  },
+  "duration": "continuous",
+  "transitions": ["listening", "processing"]
+}

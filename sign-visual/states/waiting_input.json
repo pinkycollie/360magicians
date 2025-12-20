@@ -1,0 +1,17 @@
+{
+  "state": "waiting_input",
+  "description": "System needs user input to continue",
+  "visualCues": {
+    "posture": "expectant",
+    "handPosition": "requesting_gesture",
+    "facialExpression": "questioning",
+    "movement": "inviting_response"
+  },
+  "signSemantics": {
+    "primary": "needs_input",
+    "secondary": "waiting",
+    "intensity": "medium"
+  },
+  "duration": "continuous_until_input",
+  "transitions": ["listening", "processing", "idle"]
+}
