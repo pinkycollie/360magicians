@@ -53,3 +53,8 @@ ssl/
 # Logs
 logs/
 *.log
+
+# Deno
+.deno/
+deno.lock
+.cache/

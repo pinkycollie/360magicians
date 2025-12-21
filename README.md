@@ -1,8 +1,30 @@
-# 360 Magicians - Agent Development Kit (ADK)
+# 360 Magicians - Agent Development Kit (ADK) + MBTQ Platform
 
 ## Overview
 
-The 360 Magicians Agent Development Kit is a foundational platform for building, managing, and deploying AI agents in an **agnostic framework**. This HTML-based interface provides an intuitive way to configure agents, orchestrate workflows, and manage deployments across multiple LLM providers.
+The 360 Magicians platform combines a powerful Agent Development Kit (ADK) with the MBTQ (Deaf-First) edge functions infrastructure. This provides both an HTML-based interface for agent configuration and a production-ready Deno Deploy infrastructure for deaf-first, accessible AI services.
+
+## 🆕 MBTQ Fresh 2.0 Infrastructure
+
+**NEW!** Complete production infrastructure with edge functions, WebSocket communication, and CI/CD automation:
+
+- 🌐 **6 Edge Functions** - API Gateway, DeafAUTH, AI Router, PinkSync, Fibonrose, Monitor
+- ⚡ **Real-time WebSocket** - PinkSync client SDK with React hooks
+- 🔄 **CI/CD Pipeline** - 9-stage automated deployment
+- ♿ **Deaf-First Design** - WCAG AAA compliant, visual-first UX
+- 🚀 **Global Edge** - 0ms cold starts, <50ms latency, 35+ regions
+
+**Quick Links**:
+- 📚 [Complete Platform Guide](COMPLETE_PLATFORM_GUIDE.md) - Start here!
+- 🏗️ [MBTQ Edge Infrastructure](MBTQ_EDGE_INFRASTRUCTURE.md) - Full infrastructure docs
+- 🔄 [CI/CD Pipeline](CI_CD_PIPELINE.md) - Automated deployment guide
+- 📡 [PinkSync Client Examples](examples/PINKSYNC_CLIENT_EXAMPLES.md) - WebSocket SDK usage
+
+---
+
+## Agent Development Kit (ADK)
+
+The ADK is a foundational platform for building, managing, and deploying AI agents in an **agnostic framework**. This HTML-based interface provides an intuitive way to configure agents, orchestrate workflows, and manage deployments across multiple LLM providers.
 
 ## Features
 
