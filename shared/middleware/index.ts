@@ -20,7 +20,7 @@ export function corsMiddleware(allowedOrigins: string[]) {
       return new Response(null, { status: 204 });
     }
     
-    return ctx.next();
+    return await ctx.next();
   };
 }
 
@@ -53,7 +53,7 @@ export function rateLimitMiddleware(
       limiter.set(clientIP, { count: 1, resetAt: now + windowMs });
     }
     
-    return ctx.next();
+    return await ctx.next();
   };
 }
 

@@ -653,7 +653,7 @@ jobs:
   deployment-summary:
     name: Deployment Summary
     runs-on: ubuntu-latest
-    needs: [deploy-production, smoke-tests, load-test, accessibility-check]
+    needs: [deploy-production, smoke-tests, accessibility-check]
     if: always()
     
     steps:

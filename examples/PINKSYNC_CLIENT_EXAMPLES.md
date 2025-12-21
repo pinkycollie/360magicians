@@ -1,5 +1,9 @@
 # PinkSync Client SDK Examples
 
+## Security Note
+
+🔒 **Secure Authentication**: PinkSync uses a secure handshake-based authentication system. Tokens are never sent in URL query parameters to prevent exposure in logs. Authentication occurs via WebSocket messages after connection establishment.
+
 ## Installation
 
 ```bash

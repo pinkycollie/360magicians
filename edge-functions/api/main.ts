@@ -30,7 +30,7 @@ app.use((ctx) => {
     return new Response(null, { status: 204 });
   }
   
-  return ctx.next();
+  return await ctx.next();
 });
 
 // ============================================================================
@@ -41,14 +41,22 @@ app.use(async (ctx) => {
   const response = await ctx.next();
   const duration = Date.now() - start;
   
-  // Log to Supabase
-  await supabase.from('api_logs').insert({
-    path: ctx.url.pathname,
-    method: ctx.request.method,
-    duration_ms: duration,
-    region: Deno.env.get('DENO_REGION'),
-    timestamp: new Date().toISOString(),
-  });
+  // Log to Supabase (best-effort; failures must not break the request)
+  try {
+    const { error } = await supabase.from('api_logs').insert({
+      path: ctx.url.pathname,
+      method: ctx.request.method,
+      duration_ms: duration,
+      region: Deno.env.get('DENO_REGION'),
+      timestamp: new Date().toISOString(),
+    });
+    
+    if (error) {
+      console.error('Failed to insert API log into Supabase:', error);
+    }
+  } catch (err) {
+    console.error('Unexpected error while logging API request to Supabase:', err);
+  }
   
   return response;
 });

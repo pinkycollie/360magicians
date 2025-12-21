@@ -29,7 +29,7 @@ app.use(async (ctx) => {
   const authData = await authResponse.json();
   ctx.state.user = authData.user;
   
-  return ctx.next();
+  return await ctx.next();
 });
 
 // ============================================================================
@@ -49,7 +49,7 @@ app.use((ctx) => {
     rateLimiter.set(clientIP, { count: 1, resetAt: now + 60000 });
   }
   
-  return ctx.next();
+  return await ctx.next();
 });
 
 // ============================================================================
@@ -85,6 +85,15 @@ app.post('/chat', async (ctx) => {
   
   const data = await response.json();
   
+  // Validate response structure
+  if (!data.content || !Array.isArray(data.content) || !data.content[0]?.text) {
+    console.error('Invalid AI response:', data);
+    return ctx.json({
+      error: 'Invalid response from AI service',
+      details: data.error?.message || 'Unexpected response format'
+    }, { status: 500 });
+  }
+  
   // Log to Fibonrose
   await fetch('https://fibonrose.360magicians.com/log', {
     method: 'POST',
@@ -110,9 +119,9 @@ app.post('/chat', async (ctx) => {
 // ============================================================================
 
 function selectModel(prompt: string): string {
-  if (prompt.length < 100) return 'claude-haiku-4-20250514';
-  if (prompt.includes('code') || prompt.includes('script')) return 'claude-sonnet-4-20250514';
-  return 'claude-sonnet-4-20250514';
+  if (prompt.length < 100) return 'claude-3-haiku-20240307';
+  if (prompt.includes('code') || prompt.includes('script')) return 'claude-3-sonnet-20240229';
+  return 'claude-3-sonnet-20240229';
 }
 
 function buildMBTQPrompt(role: string, user: { trustScore: number }): string {

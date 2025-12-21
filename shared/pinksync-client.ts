@@ -22,6 +22,8 @@ export class PinkSyncClient {
   private reconnectAttempts = 0;
   private maxReconnectAttempts = 5;
   private listeners = new Map<string, Set<(data: any) => void>>();
+  private isConnecting = false;
+  private isDisconnecting = false;
   
   constructor(options: PinkSyncOptions) {
     this.token = options.token;
@@ -36,21 +38,48 @@ export class PinkSyncClient {
   
   connect(): Promise<void> {
     return new Promise((resolve, reject) => {
+      if (this.isConnecting) {
+        reject(new Error('Connection already in progress'));
+        return;
+      }
+      
+      this.isConnecting = true;
+      
       try {
-        const wsUrl = `${this.baseUrl}/ws?token=${this.token}`;
+        // Connect without token in URL - will authenticate via handshake message
+        const wsUrl = `${this.baseUrl}/ws`;
         this.ws = new WebSocket(wsUrl);
         
         this.ws.onopen = () => {
-          console.log('✅ PinkSync connected');
-          this.reconnectAttempts = 0;
-          this.emit('connected', {});
-          resolve();
+          console.log('🔌 WebSocket connected, authenticating...');
+          
+          // Send authentication message immediately after connection
+          this.ws!.send(JSON.stringify({
+            type: 'authenticate',
+            token: this.token,
+          }));
         };
         
         this.ws.onmessage = (event) => {
           try {
             const message = JSON.parse(event.data);
-            this.handleMessage(message);
+            
+            // Handle authentication response
+            if (message.type === 'authenticated') {
+              console.log('✅ PinkSync authenticated');
+              this.reconnectAttempts = 0;
+              this.isConnecting = false;
+              this.emit('connected', {});
+              resolve();
+            } else if (message.type === 'auth_error') {
+              console.error('❌ Authentication failed:', message.message);
+              this.isConnecting = false;
+              this.ws?.close();
+              reject(new Error(message.message || 'Authentication failed'));
+            } else {
+              // Handle regular messages
+              this.handleMessage(message);
+            }
           } catch (error) {
             console.error('Failed to parse message:', error);
           }
@@ -58,15 +87,17 @@ export class PinkSyncClient {
         
         this.ws.onerror = (error) => {
           console.error('WebSocket error:', error);
+          this.isConnecting = false;
           this.emit('error', { error });
           reject(error);
         };
         
         this.ws.onclose = () => {
           console.log('❌ PinkSync disconnected');
+          this.isConnecting = false;
           this.emit('disconnected', {});
           
-          if (this.autoReconnect && this.reconnectAttempts < this.maxReconnectAttempts) {
+          if (this.autoReconnect && !this.isDisconnecting && this.reconnectAttempts < this.maxReconnectAttempts) {
             setTimeout(() => {
               this.reconnectAttempts++;
               console.log(`🔄 Reconnecting... (attempt ${this.reconnectAttempts})`);
@@ -75,16 +106,22 @@ export class PinkSyncClient {
           }
         };
       } catch (error) {
+        this.isConnecting = false;
         reject(error);
       }
     });
   }
   
   disconnect() {
+    this.isDisconnecting = true;
     if (this.ws) {
       this.ws.close();
       this.ws = null;
     }
+    // Reset flag after a short delay to allow reconnection if needed later
+    setTimeout(() => {
+      this.isDisconnecting = false;
+    }, 1000);
   }
   
   get connected(): boolean {
@@ -179,8 +216,7 @@ export class PinkSyncClient {
   
   private send(message: PinkSyncMessage) {
     if (!this.connected) {
-      console.warn('Cannot send message: not connected');
-      return;
+      throw new Error('Cannot send message: not connected');
     }
     
     this.ws!.send(JSON.stringify(message));

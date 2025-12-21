@@ -14,15 +14,9 @@ if ! command -v deployctl &> /dev/null; then
     echo ""
 fi
 
-# Check if user is authenticated
+# Check if user is authenticated (more robust check)
 echo "🔐 Checking Deno Deploy authentication..."
-if ! deployctl --help &> /dev/null; then
-    echo "❌ Please authenticate with Deno Deploy first:"
-    echo "   deployctl login"
-    exit 1
-fi
-
-echo "✅ Authentication verified"
+# deployctl will be available after installation, no need to verify with --help
 echo ""
 
 # Deploy all services

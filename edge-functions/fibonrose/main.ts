@@ -58,7 +58,10 @@ async function updateTrustScore(userId: string, event: string) {
     .eq('user_id', userId)
     .single();
   
-  if (!current) return;
+  if (!current) {
+    console.warn(`Cannot update trust score: user ${userId} not found in database`);
+    return;
+  }
   
   let adjustment = 0;
   

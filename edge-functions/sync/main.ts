@@ -64,20 +64,7 @@ app.post('/sync', async (ctx) => {
 
 // GET /ws - WebSocket endpoint
 app.get('/ws', (ctx) => {
-  const token = ctx.url.searchParams.get('token');
-  
-  if (!token) {
-    return new Response('Missing token', { status: 401 });
-  }
-  
-  // Verify token with DeafAUTH (simplified for now)
-  const userId = extractUserIdFromToken(token);
-  
-  if (!userId) {
-    return new Response('Invalid token', { status: 401 });
-  }
-  
-  // Upgrade to WebSocket
+  // WebSocket upgrade without authentication (will authenticate via handshake)
   const upgrade = ctx.request.headers.get('upgrade') || '';
   if (upgrade.toLowerCase() !== 'websocket') {
     return new Response('Expected websocket', { status: 426 });
@@ -85,36 +72,102 @@ app.get('/ws', (ctx) => {
   
   const { socket, response } = Deno.upgradeWebSocket(ctx.request);
   
+  let userId: string | null = null;
+  let authenticated = false;
+  
   // Setup WebSocket handlers
   socket.onopen = () => {
-    console.log(`✅ User ${userId} connected`);
-    userConnections.set(userId, socket);
-    
-    // Send welcome message
-    socket.send(JSON.stringify({
-      type: 'connected',
-      userId,
-      timestamp: new Date().toISOString(),
-    }));
+    console.log('🔌 WebSocket connection established, awaiting authentication');
   };
   
   socket.onmessage = (event) => {
     try {
       const message = JSON.parse(event.data);
-      handleMessage(socket, userId, message);
+      
+      // Handle authentication message
+      if (message.type === 'authenticate' && !authenticated) {
+        const token = message.token;
+        
+        if (!token) {
+          socket.send(JSON.stringify({
+            type: 'auth_error',
+            message: 'Missing authentication token',
+          }));
+          socket.close();
+          return;
+        }
+        
+        // Verify token with DeafAUTH (simplified for now)
+        userId = extractUserIdFromToken(token);
+        
+        if (!userId) {
+          socket.send(JSON.stringify({
+            type: 'auth_error',
+            message: 'Invalid authentication token',
+          }));
+          socket.close();
+          return;
+        }
+        
+        authenticated = true;
+        userConnections.set(userId, socket);
+        
+        console.log(`✅ User ${userId} authenticated`);
+        
+        // Send authentication success
+        socket.send(JSON.stringify({
+          type: 'authenticated',
+          userId,
+          timestamp: new Date().toISOString(),
+        }));
+        
+        return;
+      }
+      
+      // Require authentication for all other messages
+      if (!authenticated || !userId) {
+        socket.send(JSON.stringify({
+          type: 'error',
+          reason: 'not_authenticated',
+          message: 'You must authenticate before sending messages',
+        }));
+        return;
+      }
+      
+      try {
+        handleMessage(socket, userId, message);
+      } catch (error) {
+        console.error('Error handling message:', error);
+        socket.send(JSON.stringify({
+          type: 'error',
+          reason: 'internal_error',
+          message: 'Failed to process message',
+          timestamp: new Date().toISOString(),
+        }));
+      }
     } catch (error) {
       console.error('Failed to parse message:', error);
+      socket.send(JSON.stringify({
+        type: 'error',
+        reason: 'invalid_json',
+        message: 'Malformed message payload',
+        timestamp: new Date().toISOString(),
+      }));
     }
   };
   
   socket.onclose = () => {
-    console.log(`❌ User ${userId} disconnected`);
-    userConnections.delete(userId);
-    
-    // Remove from all rooms
-    rooms.forEach((members) => {
-      members.delete(socket);
-    });
+    if (userId) {
+      console.log(`❌ User ${userId} disconnected`);
+      userConnections.delete(userId);
+      
+      // Remove from all rooms
+      rooms.forEach((members) => {
+        members.delete(socket);
+      });
+    } else {
+      console.log('❌ Unauthenticated connection closed');
+    }
   };
   
   socket.onerror = (error) => {

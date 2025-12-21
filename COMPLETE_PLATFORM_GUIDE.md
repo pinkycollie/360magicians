@@ -163,7 +163,8 @@ https://monitor.mbtq.dev             - Monitor
 
 ### WebSocket
 ```
-wss://sync.360magicians.com/ws?token=<jwt>
+wss://sync.360magicians.com/ws
+Note: Authentication via handshake message (token not in URL for security)
 ```
 
 ## 🔧 Technology Stack
