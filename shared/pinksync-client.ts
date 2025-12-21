@@ -27,7 +27,7 @@ export class PinkSyncClient {
     this.token = options.token;
     this.baseUrl = options.baseUrl || 'wss://sync.360magicians.com';
     this.autoReconnect = options.autoReconnect !== false;
-    this.reconnectDelay = options.reconnectDelay || 3000;
+    this.reconnectDelay = Math.max(1000, options.reconnectDelay ?? 3000);
   }
   
   // ============================================================================
