@@ -97,29 +97,37 @@ app.get('/ws', (ctx) => {
           return;
         }
         
-        // Verify token with DeafAUTH (simplified for now)
-        userId = extractUserIdFromToken(token);
-        
-        if (!userId) {
+        // Verify token with DeafAUTH (async operation)
+        extractUserIdFromToken(token).then((verifiedUserId) => {
+          if (!verifiedUserId) {
+            socket.send(JSON.stringify({
+              type: 'auth_error',
+              message: 'Invalid authentication token',
+            }));
+            socket.close();
+            return;
+          }
+          
+          userId = verifiedUserId;
+          authenticated = true;
+          userConnections.set(userId, socket);
+          
+          console.log(`✅ User ${userId} authenticated`);
+          
+          // Send authentication success
+          socket.send(JSON.stringify({
+            type: 'authenticated',
+            userId,
+            timestamp: new Date().toISOString(),
+          }));
+        }).catch((error) => {
+          console.error('Error during token verification:', error);
           socket.send(JSON.stringify({
             type: 'auth_error',
-            message: 'Invalid authentication token',
+            message: 'Authentication failed',
           }));
           socket.close();
-          return;
-        }
-        
-        authenticated = true;
-        userConnections.set(userId, socket);
-        
-        console.log(`✅ User ${userId} authenticated`);
-        
-        // Send authentication success
-        socket.send(JSON.stringify({
-          type: 'authenticated',
-          userId,
-          timestamp: new Date().toISOString(),
-        }));
+        });
         
         return;
       }
@@ -299,13 +307,23 @@ async function handleAccessibilityUpdate(userId: string, preferences: any) {
 // Helper Functions
 // ============================================================================
 
-function extractUserIdFromToken(token: string): string | null {
-  // Simplified token extraction - in production, verify with DeafAUTH
+async function extractUserIdFromToken(token: string): Promise<string | null> {
   try {
-    // This is a placeholder - implement proper JWT verification
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    return payload.sub || payload.userId;
-  } catch {
+    // Verify token with DeafAUTH service for proper signature validation
+    const authResponse = await fetch('https://auth.360magicians.com/verify', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+    
+    if (!authResponse.ok) {
+      console.warn('Token verification failed:', authResponse.status);
+      return null;
+    }
+    
+    const authData = await authResponse.json();
+    return authData.user?.id || null;
+  } catch (error) {
+    console.error('Error verifying token:', error);
     return null;
   }
 }
