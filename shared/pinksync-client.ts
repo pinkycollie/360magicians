@@ -210,7 +210,9 @@ export class PinkSyncClient {
   }
   
   async getStats(): Promise<any> {
-    const response = await fetch(`${this.baseUrl.replace('wss://', 'https://')}/stats`);
+    const statsUrl = new URL(this.baseUrl.replace(/^wss:/, 'https:'));
+    statsUrl.pathname = statsUrl.pathname.replace(/\/$/, '') + '/stats';
+    const response = await fetch(statsUrl.toString());
     return response.json();
   }
 }
